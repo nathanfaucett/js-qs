@@ -46,9 +46,11 @@ qs.stringify = function(obj, options) {
 decode_regex = /\+/g;
 
 function decode(str) {
+    var value;
 
     try {
-        return decodeURIComponent(str.replace(decode_regex, " "));
+        value = decodeURIComponent(str.replace(decode_regex, " "));
+        return +value || value;
     } catch (e) {
         return str;
     }

@@ -43,7 +43,7 @@ qs.stringify = function(obj, options) {
     return keys.join(delimiter)
 };
 
-decode_regex = /\+/g;
+var decode_regex = /\+/g;
 
 function decode(str) {
     var value, num;

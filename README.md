@@ -1,4 +1,4 @@
-EJS
+qs
 =======
 
-ejs for the browser and node.js
+querystring parse/stringify for the browser and node.js

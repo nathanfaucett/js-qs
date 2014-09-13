@@ -12,9 +12,9 @@ function stringify(obj, prefix) {
     Buffer.isBuffer(obj) ? obj = obj.toString() : obj instanceof Date ? obj = obj.toISOString() : null === obj && (obj = "");
 
     if (
-        "string" == typeof(obj) ||
-        "number" == typeof(obj) ||
-        "boolean" == typeof(obj)
+        typeof(obj) === "string" ||
+        typeof(obj) === "number" ||
+        typeof(obj) === "boolean"
     ) {
         return [encodeURIComponent(prefix) + "=" + encodeURIComponent(obj)];
     }
@@ -32,7 +32,7 @@ qs.stringify = function(obj, options) {
     var delimiter, key, keys = [];
 
     options || (options = {});
-    delimiter = "undefined" == typeof(options.delimiter) ? "&" : options.delimiter;
+    delimiter = typeof(options.delimiter) === "undefined" ? "&" : options.delimiter;
 
     for (key in obj) {
         if (hasOwnProperty.call(obj, key)) {
@@ -46,11 +46,12 @@ qs.stringify = function(obj, options) {
 decode_regex = /\+/g;
 
 function decode(str) {
-    var value;
+    var value, num;
 
     try {
         value = decodeURIComponent(str.replace(decode_regex, " "));
-        return +value || value;
+        num = +value;
+        return num !== NaN ? num : value;
     } catch (e) {
         return str;
     }
@@ -237,15 +238,15 @@ qs.parse = function(str, options) {
     var obj = {},
         tempObj, keys, i, il, key, newObj;
 
-    if ("" === str || null === str || "undefined" == typeof(str)) return {};
+    if ("" === str || null === str || typeof(str) === "undefined") return {};
 
     options || (options = {});
-    options.delimiter = "string" == typeof(options.delimiter) || (options.delimiter instanceof RegExp) ? options.delimiter : "&";
-    options.depth = "number" == typeof(options.depth) ? options.depth : 5;
-    options.arrayLimit = "number" == typeof(options.arrayLimit) ? options.arrayLimit : 20;
-    options.parameterLimit = "number" == typeof(options.parameterLimit) ? options.parameterLimit : 1e3;
+    options.delimiter = typeof(options.delimiter) === "string" || (options.delimiter instanceof RegExp) ? options.delimiter : "&";
+    options.depth = typeof(options.depth) === "number" ? options.depth : 5;
+    options.arrayLimit = typeof(options.arrayLimit) === "number" ? options.arrayLimit : 20;
+    options.parameterLimit = typeof(options.parameterLimit) === "number" ? options.parameterLimit : 1e3;
 
-    tempObj = "string" == typeof(str) ? parseValues(str, options) : str;
+    tempObj = typeof(str) === "string" ? parseValues(str, options) : str;
     obj = {};
 
     keys = utils.keys(tempObj);

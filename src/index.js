@@ -51,7 +51,7 @@ function decode(str) {
     try {
         value = decodeURIComponent(str.replace(decode_regex, " "));
         num = +value;
-        return num !== NaN ? num : value;
+        return num !== num ? value : num;
     } catch (e) {
         return str;
     }

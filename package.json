@@ -1,0 +1,25 @@
+{
+  "name": "qs",
+  "version": "0.0.1",
+  "description": "querystring parse/stringify for the browser and node.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nathanfaucett/qs.git"
+  },
+  "main": "src/index.js",
+  "keywords": [
+    "qs",
+    "qs.js"
+  ],
+  "author": "Nathan Faucett",
+  "license": "BSD-2-Clause",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "grunt": "",
+    "grunt-jsbeautifier": ""
+  },
+  "dependencies": {
+    "type": "git://github.com/nathanfaucett/type",
+    "utils": "git://github.com/nathanfaucett/utils"
+  }
+}

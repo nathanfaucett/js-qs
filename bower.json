@@ -1,0 +1,23 @@
+{
+  "name": "qs",
+  "version": "0.0.1",
+  "homepage": "https://github.com/nathanfaucett/qs",
+  "authors": [
+    "nathanfaucett <nathanfaucett@gmail.com>"
+  ],
+  "description": "querystring parse/stringify for the browser and node.js",
+  "main": "src/index.js",
+  "keywords": [
+    "qs",
+    "qs.js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "template": "nathanfaucett/template"
+  }
+}

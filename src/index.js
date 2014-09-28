@@ -3,7 +3,7 @@ var utils = require("utils"),
 
 
 var qs = module.exports,
-    hasOwnProperty = Object.prototype.hasOwnProperty;
+    hasOwnProp = Object.prototype.hasOwnProperty;
 
 
 function stringify(obj, prefix) {
@@ -20,12 +20,12 @@ function stringify(obj, prefix) {
     }
 
     for (key in obj) {
-        if (hasOwnProperty.call(obj, key)) {
+        if (hasOwnProp.call(obj, key)) {
             (values = values.concat(stringify(obj[key], prefix + "[" + key + "]")));
         }
     }
 
-    return values
+    return values;
 }
 
 qs.stringify = function(obj, options) {
@@ -35,12 +35,12 @@ qs.stringify = function(obj, options) {
     delimiter = typeof(options.delimiter) === "undefined" ? "&" : options.delimiter;
 
     for (key in obj) {
-        if (hasOwnProperty.call(obj, key)) {
+        if (hasOwnProp.call(obj, key)) {
             (keys = keys.concat(stringify(obj[key], key)));
         }
     }
 
-    return keys.join(delimiter)
+    return keys.join(delimiter);
 };
 
 var decode_regex = /\+/g;
@@ -71,11 +71,11 @@ function parseValues(str, options) {
         } else {
             key = decode(part.slice(0, pos));
             val = decode(part.slice(pos + 1));
-            obj[key] = obj.hasOwnProperty(key) ? [].concat(obj[key]).concat(val) : val
+            obj[key] = obj.hasOwnProp(key) ? [].concat(obj[key]).concat(val) : val;
         }
     }
 
-    return obj
+    return obj;
 }
 
 function parseObject(chain, val, options) {
@@ -88,19 +88,19 @@ function parseObject(chain, val, options) {
 
     if (root === "[]") {
         obj = [];
-        obj = obj.concat(parseObject(chain, val, options))
+        obj = obj.concat(parseObject(chain, val, options));
     } else {
         cleanRoot = "[" === root[0] && "]" === root[root.length - 1] ? root.slice(1, root.length - 1) : root;
         index = parseInt(cleanRoot, 10);
         if (!isNaN(index) && root !== cleanRoot && index <= options.arrayLimit) {
             obj = [];
-            obj[index] = parseObject(chain, val, options)
+            obj[index] = parseObject(chain, val, options);
         } else {
-            obj[cleanRoot] = parseObject(chain, val, options)
+            obj[cleanRoot] = parseObject(chain, val, options);
         }
     }
 
-    return obj
+    return obj;
 }
 
 var parseKeys_parent = /^([^\[\]]*)/,
@@ -115,7 +115,7 @@ function parseKeys(key, val, options) {
 
     segment = parent.exec(key);
 
-    if (hasOwnProperty.call(segment[1])) {
+    if (hasOwnProp.call(segment[1])) {
         return void 0;
     }
 
@@ -124,13 +124,13 @@ function parseKeys(key, val, options) {
 
     i = 0;
     while (null !== (segment = child.exec(key)) && i < options.depth) {
-        hasOwnProperty.call(segment[1].replace(/\[|\]/g, "")) || keys.push(segment[1]);
+        hasOwnProp.call(segment[1].replace(/\[|\]/g, "")) || keys.push(segment[1]);
         i++;
     }
 
     segment && keys.push("[" + key.slice(segment.index) + "]");
 
-    return parseObject(keys, val, options)
+    return parseObject(keys, val, options);
 }
 
 function compact(obj, refs) {
@@ -232,7 +232,7 @@ function merge(target, source) {
     }
 
     return target;
-};
+}
 
 qs.parse = function(str, options) {
     var obj = {},
@@ -257,5 +257,5 @@ qs.parse = function(str, options) {
         obj = merge(obj, newObj);
     }
 
-    return compact(obj)
+    return compact(obj);
 };

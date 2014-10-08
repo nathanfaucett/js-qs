@@ -71,7 +71,7 @@ function parseValues(str, options) {
         } else {
             key = decode(part.slice(0, pos));
             val = decode(part.slice(pos + 1));
-            obj[key] = obj.hasOwnProp(key) ? [].concat(obj[key]).concat(val) : val;
+            obj[key] = hasOwnProp.call(obj, key) ? [].concat(obj[key]).concat(val) : val;
         }
     }
 

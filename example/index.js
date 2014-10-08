@@ -1,1 +1,1 @@
-var qs = global.qs = require("../src/index.js");
+global.qs = require("../src/index.js");

@@ -1,9 +1,15 @@
-var utils = require("utils"),
-    type = require("type");
+var indexOf = require("index_of"),
+    has = require("has"),
+    keys = require("keys"),
+    isPrimitive = require("is_primitive"),
+    isArrayLike = require("is_array_like"),
+    isNaNShim = require("is_nan"),
+    isObject = require("is_object");
 
 
 var qs = module.exports,
-    hasOwnProp = Object.prototype.hasOwnProperty,
+
+    ObjectPrototype = Object.prototype,
 
     reDecode = /\+/g,
     reParseKeysParent = /^([^\[\]]*)/,
@@ -28,13 +34,13 @@ function stringify(obj, prefix) {
 
     obj = Buffer.isBuffer(obj) ? obj.toString() : obj instanceof Date ? obj.toISOString() : obj != null ? obj : "";
 
-    if (type.isPrimitive(obj)) {
+    if (isPrimitive(obj)) {
         return [encodeURIComponent(prefix) + "=" + encodeURIComponent(obj)];
     }
 
     values = [];
 
-    if (type.isArrayLike(obj)) {
+    if (isArrayLike(obj)) {
         i = -1;
         length = obj.length - 1;
 
@@ -43,7 +49,7 @@ function stringify(obj, prefix) {
         }
     } else {
         for (key in obj) {
-            if (hasOwnProp.call(obj, key)) {
+            if (has(obj, key)) {
                 mergeArrays(values, stringify(obj[key], prefix + "[" + key + "]"));
             }
         }
@@ -59,7 +65,7 @@ qs.stringify = function(obj, options) {
     delimiter = options && typeof(options.delimiter) !== "undefined" ? options.delimiter : "&";
 
     for (key in obj) {
-        if (hasOwnProp.call(obj, key)) {
+        if (has(obj, key)) {
             mergeArrays(keys, stringify(obj[key], key));
         }
     }
@@ -97,7 +103,7 @@ function parseValues(str, options) {
             key = decode(part.slice(0, pos));
             val = decode(part.slice(pos + 1));
 
-            obj[key] = hasOwnProp.call(obj, key) ? [obj[key], val] : val;
+            obj[key] = has(obj, key) ? [obj[key], val] : val;
         }
     }
 
@@ -117,7 +123,7 @@ function parseObject(chain, val, options) {
         cleanRoot = "[" === root[0] && "]" === root[root.length - 1] ? root.slice(1, root.length - 1) : root;
         index = +cleanRoot;
 
-        if (!type.isNaN(index) && root !== cleanRoot && index <= options.arrayLimit) {
+        if (!isNaNShim(index) && root !== cleanRoot && index <= options.arrayLimit) {
             obj = [];
             obj[index] = parseObject(chain, val, options);
         } else {
@@ -138,7 +144,7 @@ function parseKeys(key, val, options) {
 
     segment = parent.exec(key);
 
-    if (hasOwnProp.call(segment[1])) {
+    if (has(ObjectPrototype, segment[1])) {
         return undefined;
     }
 
@@ -147,7 +153,9 @@ function parseKeys(key, val, options) {
 
     i = 0;
     while (null !== (segment = child.exec(key)) && i < options.depth) {
-        hasOwnProp.call(segment[1].replace(reParseKeysReplacer, "")) || (keys[keys.length] = segment[1]);
+        if (!has(ObjectPrototype, segment[1].replace(reParseKeysReplacer, ""))) {
+            keys[keys.length] = segment[1];
+        }
         i++;
     }
 
@@ -157,14 +165,14 @@ function parseKeys(key, val, options) {
 }
 
 function compact(obj, refs) {
-    var lookup, compacted, i, length, keys, key, value;
+    var lookup, compacted, i, length, objectKeys, key, value;
 
-    if (!type.isObject(obj)) {
+    if (!isObject(obj)) {
         return obj;
     }
 
     refs = refs || [];
-    lookup = utils.indexOf(refs, obj);
+    lookup = indexOf(refs, obj);
 
     if (lookup !== -1) {
         return refs[lookup];
@@ -172,7 +180,7 @@ function compact(obj, refs) {
 
     refs[refs.length] = obj;
 
-    if (type.isArray(obj)) {
+    if (isArrayLike(obj)) {
         compacted = [];
 
         i = -1;
@@ -189,12 +197,12 @@ function compact(obj, refs) {
         return compacted;
     }
 
-    keys = utils.keys(obj);
+    objectKeys = keys(obj);
     i = -1;
-    length = keys.length - 1;
+    length = objectKeys.length - 1;
 
     while (i++ < length) {
-        key = keys[i];
+        key = objectKeys[i];
         obj[key] = compact(obj[key], refs);
     }
 
@@ -219,13 +227,13 @@ function arrayToObject(array) {
 }
 
 function merge(target, source) {
-    var keys, i, il, k, kl, key, value;
+    var objectKeys, i, il, k, kl, key, value;
 
     if (!source) {
         return target;
     }
 
-    if (type.isArray(source)) {
+    if (isArrayLike(source)) {
         i = -1;
         il = source.length - 1;
 
@@ -234,7 +242,7 @@ function merge(target, source) {
             value = source[i];
 
             if (value != null) {
-                if (type.isObject(key)) {
+                if (isObject(key)) {
                     target[i] = merge(key, value);
                 } else {
                     target[i] = value;
@@ -245,7 +253,7 @@ function merge(target, source) {
         return target;
     }
 
-    if (type.isArray(target)) {
+    if (isArrayLike(target)) {
         if (typeof(source) !== "object") {
             target[target.length] = source;
             return target;
@@ -254,12 +262,12 @@ function merge(target, source) {
         }
     }
 
-    keys = utils.keys(source);
+    objectKeys = keys(source);
     k = -1;
-    kl = keys.length - 1;
+    kl = objectKeys.length - 1;
 
     while (k++ < kl) {
-        key = keys[k];
+        key = objectKeys[k];
         value = source[key];
 
         if (value && typeof(value) === "object") {
@@ -278,7 +286,7 @@ function merge(target, source) {
 
 qs.parse = function(str, options) {
     var obj = {},
-        tempObj, keys, i, il, key, newObj;
+        tempObj, objectKeys, i, il, key, newObj;
 
     if (str === "" || str == null) {
         return obj;
@@ -292,12 +300,12 @@ qs.parse = function(str, options) {
 
     tempObj = typeof(str) === "string" ? parseValues(str, options) : str;
 
-    keys = utils.keys(tempObj);
+    objectKeys = keys(tempObj);
     i = -1;
-    il = keys.length - 1;
+    il = objectKeys.length - 1;
 
     while (i++ < il) {
-        key = keys[i];
+        key = objectKeys[i];
         newObj = parseKeys(key, tempObj[key], options);
         obj = merge(obj, newObj);
     }

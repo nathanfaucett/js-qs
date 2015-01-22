@@ -20,7 +20,12 @@
     "grunt-jsbeautifier": ""
   },
   "dependencies": {
-    "type": "git://github.com/nathanfaucett/type",
-    "utils": "git://github.com/nathanfaucett/utils"
+    "has": "nathanfaucett/has",
+    "is_primitive": "nathanfaucett/is_primitive",
+    "is_array_like": "nathanfaucett/is_array_like",
+    "is_nan": "nathanfaucett/is_nan",
+    "is_object": "nathanfaucett/is_object",
+    "index_of": "nathanfaucett/index_of",
+    "keys": "nathanfaucett/keys"
   }
 }

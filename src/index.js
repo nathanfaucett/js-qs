@@ -113,7 +113,9 @@ function parseValues(str, options) {
 function parseObject(chain, val, options) {
     var root, obj, cleanRoot, index;
 
-    if (!chain.length) return val;
+    if (!chain.length) {
+        return val;
+    }
 
     root = chain.shift();
 
@@ -140,7 +142,9 @@ function parseKeys(key, val, options) {
         child = reParseKeysChild,
         segment, keys, i;
 
-    if (!key) return undefined;
+    if (!key) {
+        return undefined;
+    }
 
     segment = parent.exec(key);
 

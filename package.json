@@ -7,26 +7,34 @@
     "url": "https://github.com/nathanfaucett/qs.git"
   },
   "main": "src/index.js",
+  "scripts": {
+    "test": "npm run test-node",
+    "test-node": "node ./test | ./node_modules/.bin/tap-spec",
+    "test-node-raw": "node ./test",
+    "test-browser-local": "zuul --local 9999 --ui tape -- ./test"
+  },
   "keywords": [
     "qs",
     "qs.js"
   ],
   "author": "Nathan Faucett",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "grunt": "",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-jsbeautifier": "",
-    "mocha": "^2.1.0"
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-jsbeautifier": "^0.2.10",
+    "tap-spec": "^4.1.0",
+    "tape": "^4.2.0",
+    "zuul": "^3.6.0"
   },
   "dependencies": {
-    "has": "nathanfaucett/has",
-    "is_primitive": "nathanfaucett/is_primitive",
-    "is_array_like": "nathanfaucett/is_array_like",
-    "is_nan": "nathanfaucett/is_nan",
-    "is_object": "nathanfaucett/is_object",
-    "index_of": "nathanfaucett/index_of",
-    "keys": "nathanfaucett/keys"
+    "has": "git://github.com/nathanfaucett/has.git",
+    "is_primitive": "git://github.com/nathanfaucett/is_primitive.git",
+    "is_array_like": "git://github.com/nathanfaucett/is_array_like.git",
+    "is_nan": "git://github.com/nathanfaucett/is_nan.git",
+    "is_object": "git://github.com/nathanfaucett/is_object.git",
+    "index_of": "git://github.com/nathanfaucett/index_of.git",
+    "keys": "git://github.com/nathanfaucett/keys.git"
   }
 }

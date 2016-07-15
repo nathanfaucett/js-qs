@@ -1,10 +1,10 @@
-var indexOf = require("index_of"),
-    has = require("has"),
-    keys = require("keys"),
-    isPrimitive = require("is_primitive"),
-    isArrayLike = require("is_array_like"),
-    isNaNShim = require("is_nan"),
-    isObject = require("is_object");
+var indexOf = require("@nathanfaucett/index_of"),
+    has = require("@nathanfaucett/has"),
+    keys = require("@nathanfaucett/keys"),
+    isPrimitive = require("@nathanfaucett/is_primitive"),
+    isArrayLike = require("@nathanfaucett/is_array_like"),
+    isNaNShim = require("@nathanfaucett/is_nan"),
+    isObject = require("@nathanfaucett/is_object");
 
 
 var qs = module.exports,

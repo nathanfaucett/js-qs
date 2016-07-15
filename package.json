@@ -1,5 +1,5 @@
 {
-  "name": "qs",
+  "name": "@nathanfaucett/qs",
   "version": "0.0.1",
   "description": "querystring parse/stringify for the browser and node.js",
   "repository": {
@@ -21,20 +21,20 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.11.3",
-    "grunt-jsbeautifier": "^0.2.10",
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-jsbeautifier": "^0.2.13",
     "tap-spec": "^4.1.0",
     "tape": "^4.2.0",
     "zuul": "^3.6.0"
   },
   "dependencies": {
-    "has": "git://github.com/nathanfaucett/has.git",
-    "is_primitive": "git://github.com/nathanfaucett/is_primitive.git",
-    "is_array_like": "git://github.com/nathanfaucett/is_array_like.git",
-    "is_nan": "git://github.com/nathanfaucett/is_nan.git",
-    "is_object": "git://github.com/nathanfaucett/is_object.git",
-    "index_of": "git://github.com/nathanfaucett/index_of.git",
-    "keys": "git://github.com/nathanfaucett/keys.git"
+    "@nathanfaucett/has": "^0.0.1",
+    "@nathanfaucett/is_primitive": "^0.0.1",
+    "@nathanfaucett/is_array_like": "^0.0.2",
+    "@nathanfaucett/is_nan": "^0.0.1",
+    "@nathanfaucett/is_object": "^0.0.1",
+    "@nathanfaucett/index_of": "^0.0.1",
+    "@nathanfaucett/keys": "^0.0.1"
   }
 }
